@@ -142,7 +142,10 @@ if st.button("🌾 Predict Yield", type="primary", use_container_width=True):
 
     # Show input summary
     with st.expander("📋 See input summary"):
-        st.dataframe(input_df.T.rename(columns={0: "Value"}), use_container_width=True)
+        # Convert everything to string to avoid PyArrow mixed-type errors
+        summary = input_df.T.rename(columns={0: "Value"})
+        summary["Value"] = summary["Value"].astype(str)
+        st.dataframe(summary, use_container_width=True)
 
 # ---------- Footer ----------
 st.markdown("---")
